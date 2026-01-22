@@ -112,3 +112,24 @@
   cursor: pointer;
   font-weight: 700;
 }
+
+.premium-landing {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.premium-landing-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.55);
+  z-index: 1;
+}
+
+.ps-wrap {
+  position: relative;
+  z-index: 2;
+}
