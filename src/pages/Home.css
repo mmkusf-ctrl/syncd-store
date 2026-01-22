@@ -3,9 +3,12 @@
 .home {
   min-height: 100vh;
   position: relative;
-  background:
-    radial-gradient(1200px 600px at 50% 0%, rgba(255,255,255,0.9), rgba(255,255,255,0.1)),
-    linear-gradient(#cfe9ff, #f3e2d3 45%, #efe5d8);
+  background-position: center;
+  background-size: cover;
+}
+.logo {
+  width: min(420px, 75vw);
+  height: auto;
 }
 
 /* Header */
