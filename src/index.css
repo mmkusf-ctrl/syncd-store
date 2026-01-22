@@ -1,1 +1,29 @@
-html, body, #root { height: 100%; }
+html {
+  scroll-behavior: smooth;
+}
+
+/* Smooth route transitions */
+.page-transition {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 260ms ease, transform 260ms ease;
+  will-change: opacity, transform;
+}
+
+.page-transition--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Optional: smooth interactions site-wide */
+button, a, .premium-logo {
+  transition: transform 180ms ease, opacity 180ms ease, background 180ms ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: scale(0.98);
+}
