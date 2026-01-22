@@ -4,7 +4,6 @@ export default function PageTransition({ children }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    // triggers transition after mount
     setShow(true);
   }, []);
 
