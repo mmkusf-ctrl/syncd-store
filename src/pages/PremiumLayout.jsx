@@ -1,7 +1,7 @@
+import { Outlet, useNavigate } from "react-router-dom";
 import "./PremiumLanding.css";
 import bg from "../assets/premium-bg.jpg";
 import logo from "../assets/logo.png";
-import { Outlet, useNavigate } from "react-router-dom";
 
 export default function PremiumLayout() {
   const navigate = useNavigate();
