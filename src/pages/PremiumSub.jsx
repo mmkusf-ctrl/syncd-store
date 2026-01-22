@@ -1,21 +1,26 @@
+import { useParams } from "react-router-dom";
 import { products } from "../data/products";
 import "./PremiumSub.css";
 
 export default function PremiumSub() {
-  const necklace = products.filter(p => p.category === "premium");
+  const { collection, sub } = useParams();
+
+  const items = products.filter(
+    (p) => p.collection === collection && p.sub === sub
+  );
+
+  const title =
+    `${collection.toUpperCase()} COLLECTION / ${sub.replace("-", " ").toUpperCase()}`;
 
   return (
-    <div className="necklace-page">
-      <div className="necklace-overlay">
+    <div className="sub-page">
+      <div className="sub-overlay">
+        <h2 className="sub-title">{title}</h2>
 
-        <h2 className="necklace-title">
-          PREMIUM COLLECTION / NECKLACE
-        </h2>
-
-        <div className="necklace-grid">
-          {necklace.map((p, i) => (
-            <div key={p.id} className="necklace-card">
-              <div className="necklace-img">{i + 1}</div>
+        <div className="sub-grid">
+          {items.map((p, i) => (
+            <div key={p.id} className="sub-card">
+              <div className="sub-img">{i + 1}</div>
 
               <div className="qty">
                 <button>-</button>
@@ -27,7 +32,6 @@ export default function PremiumSub() {
             </div>
           ))}
         </div>
-
       </div>
     </div>
   );
