@@ -9,15 +9,13 @@ export default function Collection() {
   const { category } = useParams();
   const [page, setPage] = useState(1);
 
-  useEffect(() => setPage(1), [category]);
-
-  <p style={{ marginTop: 6, color: "#444" }}>
-  Showing {pageItems.length} of {filtered.length} items
-</p>
-
+  // Reset page when category changes (correct hook)
+  useEffect(() => {
+    setPage(1);
+  }, [category]);
 
   const filtered = useMemo(() => {
-    return products.filter(p => p.category === category);
+    return products.filter((p) => p.category === category);
   }, [category]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
@@ -28,11 +26,16 @@ export default function Collection() {
     <div className="collection">
       <header className="collection-header">
         <Link to="/" className="back">← Home</Link>
-        <h1 className="title">{category?.toUpperCase()} COLLECTION</h1>
+        <div>
+          <h1 className="title">{(category || "").toUpperCase()} COLLECTION</h1>
+          <p style={{ marginTop: 6, color: "#444" }}>
+            Showing {pageItems.length} of {filtered.length} items
+          </p>
+        </div>
       </header>
 
       <div className="grid">
-        {pageItems.map(item => (
+        {pageItems.map((item) => (
           <div key={item.id} className="card">
             <div className="img-placeholder">IMAGE</div>
             <div className="card-body">
@@ -45,9 +48,15 @@ export default function Collection() {
       </div>
 
       <footer className="pager">
-        <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>Prev</button>
+        <button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+          Prev
+        </button>
+
         <span>Page {page} of {totalPages}</span>
-        <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>Next</button>
+
+        <button disabled={page === totalPages} onClick={() => setPage((p) => p + 1)}>
+          Next
+        </button>
       </footer>
     </div>
   );
