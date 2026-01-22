@@ -1,253 +1,48 @@
-.acct {
-  padding: 22px;
+.account-page {
+  padding: 40px 60px;
   font-family: Arial, sans-serif;
-  min-height: 100vh;
 }
 
-.acct-top {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  margin-bottom: 18px;
-}
-
-.acct-title {
+.account-title {
   font-size: 28px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  margin-bottom: 30px;
 }
 
-.acct-back {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-weight: 700;
-  color: #111;
-}
-
-.acct-auth {
+.account-grid {
   display: grid;
-  place-items: center;
-  padding-top: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
 }
 
-.acct-auth-card {
-  width: min(520px, 95vw);
-  border: 1px solid #ddd;
-  border-radius: 14px;
-  padding: 18px;
-  background: #fff;
+.account-card {
+  border: 2px solid #111;
+  border-radius: 12px;
+  padding: 20px;
+  background: white;
 }
 
-.acct-auth-switch {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
-.acct-auth-switch button {
-  flex: 1;
-  padding: 10px 12px;
-  border: 1px solid #111;
-  background: transparent;
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.acct-auth-switch button.active {
-  background: #111;
-  color: #fff;
-}
-
-.acct-label {
-  display: grid;
-  gap: 6px;
-  margin: 12px 0;
-  font-weight: 700;
-}
-
-.acct-input {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  outline: none;
-}
-
-.acct-primary {
-  margin-top: 10px;
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #111;
-  background: #111;
-  color: #fff;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.acct-secondary {
-  margin-top: 14px;
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #111;
-  background: transparent;
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.acct-note {
-  margin-top: 10px;
-  font-size: 12px;
-  color: #555;
-}
-
-.acct-shell {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 18px;
-  align-items: start;
-}
-
-.acct-sidebar {
-  border: 1px solid #ddd;
-  border-radius: 14px;
-  padding: 14px;
-  background: #fff;
-}
-
-.acct-user {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-bottom: 14px;
-}
-
-.acct-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  background: #111;
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-}
-
-.acct-name {
-  font-weight: 900;
-}
-
-.acct-email {
-  font-size: 12px;
-  color: #555;
-}
-
-.acct-nav {
-  display: grid;
-  gap: 8px;
-}
-
-.acct-nav button {
-  text-align: left;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  background: transparent;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.acct-nav button.active {
-  border-color: #111;
-}
-
-.acct-content {
-  border: 1px solid #ddd;
-  border-radius: 14px;
-  padding: 16px;
-  background: #fff;
-  min-height: 320px;
-}
-
-.acct-card h2 {
+.account-card h2 {
   margin-bottom: 10px;
 }
 
-.acct-muted {
-  color: #666;
-  font-size: 13px;
-}
-
-.acct-orders, .acct-addresses {
-  display: grid;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.acct-order, .acct-address {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px;
-  border: 1px solid #eee;
-  border-radius: 12px;
-}
-
-.acct-order-id {
-  font-weight: 900;
-}
-
-.acct-order-right {
-  text-align: right;
-}
-
-.acct-status {
-  font-weight: 900;
-}
-
-.acct-total {
-  color: #111;
-  font-weight: 900;
-}
-
-.acct-link {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-weight: 900;
-  color: #111;
-  text-decoration: underline;
-}
-
-.acct-address-form {
-  display: grid;
-  gap: 10px;
-  margin: 10px 0 14px;
-}
-
-.acct-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-}
-
-.acct-security {
-  display: grid;
-  gap: 12px;
+.account-card button {
   margin-top: 12px;
+  padding: 8px 16px;
+  background: #5a3825;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.acct-footer {
-  margin-top: 16px;
+.account-card button:hover {
+  opacity: 0.9;
 }
 
-@media (max-width: 900px) {
-  .acct-shell {
-    grid-template-columns: 1fr;
-  }
+.danger {
+  border-color: #b00020;
+}
 
-  .acct-row {
-    grid-template-columns: 1fr;
-  }
+.logout-btn {
+  background: #b00020 !important;
 }
