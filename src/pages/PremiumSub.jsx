@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { products } from "../data/products";
 import "./PremiumSub.css";
 
@@ -15,34 +15,53 @@ function typeToMatchText(type) {
   return type.replace("-", " ");
 }
 
+function getCategoryFromPath(pathname) {
+  // pathname is like: /collection/premium/necklace
+  const parts = (pathname || "").split("/").filter(Boolean);
+  // ["collection", "premium", "necklace"]
+  if (parts.length >= 2 && parts[0] === "collection") return parts[1];
+  return "";
+}
+
 export default function PremiumSub() {
   const { type } = useParams();
+  const location = useLocation();
+
+  const category = useMemo(
+    () => getCategoryFromPath(location.pathname),
+    [location.pathname]
+  );
+
   const [page, setPage] = useState(1);
 
-  // Reset to first page when user changes type
-  useEffect(() => setPage(1), [type]);
+  useEffect(() => setPage(1), [type, category]);
 
   const filtered = useMemo(() => {
     const matchText = normalize(typeToMatchText(type));
 
     return products.filter((p) => {
-      if (p.category !== "premium") return false;
+      if (p.category !== category) return false;
 
-      // Derive subcategory from product name (no data edits needed)
-      // Example: "Premium Necklace 01" matches type "necklace"
+      // Derive subcategory from the product name (no "type" field needed)
+      // Examples:
+      // "Premium Necklace 01" -> matches "necklace"
+      // "Pearl Ear Rings 01"  -> matches "ear rings"
       return normalize(p.name).includes(matchText);
     });
-  }, [type]);
+  }, [type, category]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const start = (page - 1) * PAGE_SIZE;
   const items = filtered.slice(start, start + PAGE_SIZE);
 
+  const titleCategory = (category || "").toUpperCase();
   const titleType = (typeToMatchText(type) || "").toUpperCase();
 
   return (
     <div className="ps-wrap">
-      <div className="ps-title">PREMIUM COLLECTION/{titleType}</div>
+      <div className="ps-title">
+        {titleCategory} COLLECTION/{titleType}
+      </div>
 
       <div className="ps-grid">
         {items.map((p, idx) => (
