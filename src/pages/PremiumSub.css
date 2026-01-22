@@ -136,3 +136,72 @@
 
 /* Ensure the content stays above overlay */
 .ps-wrap { position: relative; z-index: 2; }
+
+.necklace-page {
+  min-height: 100vh;
+  background-image: url("../assets/hero-bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.necklace-overlay {
+  min-height: 100vh;
+  background: rgba(255,255,255,0.55);
+  padding: 40px;
+}
+
+.necklace-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+.necklace-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.necklace-card {
+  display: grid;
+  place-items: center;
+  gap: 12px;
+}
+
+.necklace-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 20px;
+  border: 2px solid black;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+}
+
+.qty {
+  display: flex;
+  gap: 12px;
+  background: #5a3825;
+  padding: 6px 16px;
+  border-radius: 8px;
+  color: white;
+}
+
+.qty button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.add-btn {
+  background: #5a3825;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
