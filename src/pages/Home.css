@@ -6,7 +6,11 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+
+  /* TEMP debug */
+  outline: 4px solid red;
 }
+
 .logo {
   width: min(420px, 75vw);
   height: auto;
@@ -72,7 +76,12 @@
   display: grid;
   place-items: center;
   padding: 24px;
+
+  /* TEMP debug */
+  background: transparent;
 }
+
+
 
 .logo-box { text-align: center; }
 .logo-fake {
