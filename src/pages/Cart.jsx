@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Cart.css";
+
+import { FaShoppingCart, FaTrash, FaTag, FaLock, FaMinus, FaPlus } from "react-icons/fa";
 
 import {
   getCart,
@@ -11,18 +13,26 @@ import {
 } from "../context/cartStore";
 
 export default function Cart() {
+  const navigate = useNavigate();
+
   const [items, setItems] = useState(getCart());
   const [promo, setPromo] = useState("");
   const [appliedPromo, setAppliedPromo] = useState(null);
 
+  // keep in sync when other pages add to cart
   useEffect(() => {
     const onUpdate = () => setItems(getCart());
     window.addEventListener("cart:updated", onUpdate);
     return () => window.removeEventListener("cart:updated", onUpdate);
   }, []);
 
+  const itemCount = useMemo(
+    () => items.reduce((s, it) => s + (it.qty || 0), 0),
+    [items]
+  );
+
   const subtotal = useMemo(
-    () => items.reduce((sum, it) => sum + it.price * it.qty, 0),
+    () => items.reduce((sum, it) => sum + Number(it.price) * (it.qty || 0), 0),
     [items]
   );
 
@@ -39,14 +49,14 @@ export default function Cart() {
   }, [items.length, appliedPromo]);
 
   const tax = useMemo(() => {
+    // simple 8% demo tax
     const taxable = Math.max(0, subtotal - discount);
     return taxable * 0.08;
   }, [subtotal, discount]);
 
-  const total = useMemo(
-    () => Math.max(0, subtotal - discount) + shipping + tax,
-    [subtotal, discount, shipping, tax]
-  );
+  const total = useMemo(() => {
+    return Math.max(0, subtotal - discount) + shipping + tax;
+  }, [subtotal, discount, shipping, tax]);
 
   function applyPromo() {
     const code = promo.trim().toUpperCase();
@@ -60,110 +70,137 @@ export default function Cart() {
     }
   }
 
-  function onClear() {
+  function handleClear() {
     if (!window.confirm("Clear all items from cart?")) return;
     clearCart();
     setItems(getCart());
   }
 
-  return (
-    <div className="cart">
-      <div className="cart-top">
-        <Link className="cart-back" to="/">
-          ← Home
-        </Link>
+  function handleCheckout() {
+    if (items.length === 0) return;
+    // demo checkout (replace later with Stripe/PayPal)
+    alert("Checkout demo: Payment integration can be added next.");
+  }
 
-        <div className="cart-titlewrap">
-          <h1 className="cart-title">Cart</h1>
-          <div className="cart-sub">
-            {items.length === 0
-              ? "Your cart is empty."
-              : `Items: ${items.reduce((s, i) => s + i.qty, 0)}`}
+  return (
+    <div className="cartPage">
+      {/* Premium background + overlay */}
+      <div className="cartBg" />
+      <div className="cartOverlay" />
+
+      {/* Top bar */}
+      <header className="cartTop">
+        <div className="cartLeft">
+          <Link className="cartHome" to="/">
+            ← Home
+          </Link>
+        </div>
+
+        <div className="cartCenter">
+          <div className="cartTitleRow">
+            <h1 className="cartTitle">Cart</h1>
+            <span className="cartBadge">
+              <FaShoppingCart />
+              <span>{itemCount}</span>
+            </span>
+          </div>
+          <div className="cartSub">
+            {items.length === 0 ? "Your cart is empty." : `Ready to checkout • ${itemCount} item(s)`}
           </div>
         </div>
 
-        <div className="cart-actions">
-          <button
-            className="btn ghost"
-            onClick={onClear}
-            disabled={items.length === 0}
-          >
-            Clear cart
+        <div className="cartRight">
+          <button className="cartBtn ghost" onClick={handleClear} disabled={items.length === 0}>
+            <FaTrash />
+            Clear
           </button>
-          <button
-            className="btn"
-            disabled={items.length === 0}
-            onClick={() => alert("Demo: checkout flow next.")}
-          >
+          <button className="cartBtn solid" onClick={handleCheckout} disabled={items.length === 0}>
+            <FaLock />
             Checkout
           </button>
         </div>
-      </div>
+      </header>
 
-      <div className="cart-shell">
-        <section className="cart-left">
+      {/* Content */}
+      <main className="cartShell">
+        {/* Items */}
+        <section className="cartItemsPanel">
           {items.length === 0 ? (
-            <div className="empty">
-              <div className="empty-box">
-                <h2>Nothing here yet</h2>
-                <p>Add items from Premium/Pearl pages, then come back.</p>
-                <Link className="btn" to="/">
-                  Continue shopping
-                </Link>
+            <div className="emptyCard">
+              <div className="emptyTop">
+                <div className="emptyIcon">
+                  <FaShoppingCart />
+                </div>
+                <div>
+                  <h2>Nothing here yet</h2>
+                  <p>Add items from Premium or Pearl pages, then come back.</p>
+                </div>
+              </div>
+
+              <div className="emptyActions">
+                <button className="cartBtn solid" onClick={() => navigate("/collection/premium")}>
+                  Shop Premium
+                </button>
+                <button className="cartBtn ghost" onClick={() => navigate("/collection/pearl")}>
+                  Shop Pearl
+                </button>
               </div>
             </div>
           ) : (
-            <div className="items">
+            <div className="itemsList">
               {items.map((it) => (
-                <div className="item" key={it.id}>
+                <article className="itemRow" key={it.id}>
                   <div className="thumb">
-                    <span>IMAGE</span>
+                    <div className="thumbInner">
+                      <span className="thumbText">IMAGE</span>
+                    </div>
                   </div>
 
-                  <div className="info">
-                    <div className="name">{it.name}</div>
+                  <div className="itemInfo">
+                    <div className="itemTopLine">
+                      <div className="itemName">{it.name}</div>
+                      <div className="itemPrice">${Number(it.price).toFixed(2)}</div>
+                    </div>
 
-                    <div className="meta">
-                      <span className="mono">ID: {it.id}</span>
+                    <div className="itemMeta">
+                      <span className="pill mono">ID: {it.id}</span>
                       {it.collection ? <span className="pill">{it.collection}</span> : null}
                       {it.sub ? <span className="pill">{it.sub}</span> : null}
                     </div>
 
-                    <div className="row">
-                      <div className="price">${Number(it.price).toFixed(2)}</div>
-
-                      <div className="qty">
+                    <div className="itemBottom">
+                      <div className="qtyBox">
                         <button
-                          className="qtybtn"
+                          className="qtyBtn"
                           onClick={() => {
                             decQty(it.id);
                             setItems(getCart());
                           }}
                           aria-label="Decrease quantity"
                         >
-                          −
+                          <FaMinus />
                         </button>
 
-                        <div className="qtynum">{it.qty}</div>
+                        <div className="qtyNum">{it.qty}</div>
 
                         <button
-                          className="qtybtn"
+                          className="qtyBtn"
                           onClick={() => {
                             incQty(it.id);
                             setItems(getCart());
                           }}
                           aria-label="Increase quantity"
                         >
-                          +
+                          <FaPlus />
                         </button>
                       </div>
 
                       <div className="lineTotal">
-                        ${(it.price * it.qty).toFixed(2)}
+                        Line total: <strong>${(Number(it.price) * it.qty).toFixed(2)}</strong>
                       </div>
 
                       <button
-                        className="remove"
+                        className="removeBtn"
                         onClick={() => {
                           removeItem(it.id);
                           setItems(getCart());
@@ -173,81 +210,88 @@ export default function Cart() {
                       </button>
                     </div>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
           )}
         </section>
 
-        <aside className="cart-right">
-          <div className="summary">
-            <h2>Order summary</h2>
+        {/* Summary */}
+        <aside className="summaryPanel">
+          <div className="summaryCard">
+            <h2 className="summaryTitle">Order summary</h2>
 
-            <div className="sumrow">
+            <div className="sumRow">
               <span>Subtotal</span>
               <span>${subtotal.toFixed(2)}</span>
             </div>
 
-            <div className="sumrow">
+            <div className="sumRow">
               <span>Discount</span>
               <span>− ${discount.toFixed(2)}</span>
             </div>
 
-            <div className="sumrow">
+            <div className="sumRow">
               <span>Shipping</span>
               <span>${shipping.toFixed(2)}</span>
             </div>
 
-            <div className="sumrow">
+            <div className="sumRow">
               <span>Tax</span>
               <span>${tax.toFixed(2)}</span>
             </div>
 
             <div className="divider" />
 
-            <div className="sumrow total">
+            <div className="sumRow total">
               <span>Total</span>
               <span>${total.toFixed(2)}</span>
             </div>
 
-            <div className="promo">
-              <div className="promoline">
+            <div className="promoBox">
+              <div className="promoLabel">
+                <FaTag />
+                Promo code
+              </div>
+
+              <div className="promoRow">
                 <input
                   value={promo}
                   onChange={(e) => setPromo(e.target.value)}
-                  placeholder="Promo code (SYNC10 / FREESHIP)"
+                  placeholder="SYNC10 / FREESHIP"
                 />
-                <button className="btn ghost" onClick={applyPromo}>
+                <button className="cartBtn ghost small" onClick={applyPromo}>
                   Apply
                 </button>
               </div>
 
               {appliedPromo ? (
-                <div className="applied">
+                <div className="promoApplied">
                   Applied: <strong>{appliedPromo}</strong>{" "}
-                  <button className="linkbtn" onClick={() => setAppliedPromo(null)}>
+                  <button className="linkBtn" onClick={() => setAppliedPromo(null)}>
                     Remove
                   </button>
                 </div>
               ) : (
-                <div className="hint">Try SYNC10 (10% off) or FREESHIP</div>
+                <div className="promoHint">Try SYNC10 (10% off) or FREESHIP</div>
               )}
             </div>
 
             <button
-              className="btn full"
+              className="cartBtn solid full"
               disabled={items.length === 0}
-              onClick={() => alert("Demo: checkout flow next.")}
+              onClick={handleCheckout}
             >
+              <FaLock />
               Proceed to checkout
             </button>
 
-            <div className="note">
-              Demo cart stored in <span className="mono">localStorage</span>.
+            <div className="summaryNote">
+              Demo cart uses <span className="mono">localStorage</span>.
             </div>
           </div>
         </aside>
-      </div>
+      </main>
     </div>
   );
 }
