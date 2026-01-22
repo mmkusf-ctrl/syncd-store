@@ -11,6 +11,11 @@ export default function Collection() {
 
   useEffect(() => setPage(1), [category]);
 
+  <p style={{ marginTop: 6, color: "#444" }}>
+  Showing {pageItems.length} of {filtered.length} items
+</p>
+
+
   const filtered = useMemo(() => {
     return products.filter(p => p.category === category);
   }, [category]);
