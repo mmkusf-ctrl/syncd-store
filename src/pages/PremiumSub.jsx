@@ -150,3 +150,16 @@ export default function PremiumSub() {
     </div>
   );
 }
+
+import PageTransition from "../components/PageTransition";
+import "./PremiumSub.css";
+
+export default function PremiumSub() {
+  return (
+    <PageTransition>
+      <div className="premium-sub">
+        {/* your existing code */}
+      </div>
+    </PageTransition>
+  );
+}
