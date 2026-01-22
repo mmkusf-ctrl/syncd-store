@@ -4,6 +4,7 @@ import PageTransition from "./components/PageTransition.jsx";
 
 import Home from "./pages/Home.jsx";
 import Cart from "./pages/Cart.jsx";
+
 import Account from "./pages/Account.jsx";
 
 import PremiumLayout from "./pages/PremiumLayout.jsx";
