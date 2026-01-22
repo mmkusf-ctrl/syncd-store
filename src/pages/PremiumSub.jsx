@@ -5,38 +5,47 @@ import "./PremiumSub.css";
 
 const PAGE_SIZE = 8;
 
+function normalize(s) {
+  return (s || "").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function typeToMatchText(type) {
+  if (!type) return "";
+  if (type === "ear-rings") return "ear rings";
+  return type.replace("-", " ");
+}
+
 export default function PremiumSub() {
   const { type } = useParams();
   const [page, setPage] = useState(1);
 
+  // Reset to first page when user changes type
   useEffect(() => setPage(1), [type]);
 
   const filtered = useMemo(() => {
-  const normalize = (s) =>
-    s.toLowerCase().replace(/\s+/g, " ").trim();
+    const matchText = normalize(typeToMatchText(type));
 
-  // Convert URL type to matching text
-  const typeText =
-    type === "ear-rings" ? "ear rings" : type;
+    return products.filter((p) => {
+      if (p.category !== "premium") return false;
 
-  return products.filter((p) => {
-    if (p.category !== "premium") return false;
-    return normalize(p.name).includes(normalize(typeText));
-  });
-}, [type]);
+      // Derive subcategory from product name (no data edits needed)
+      // Example: "Premium Necklace 01" matches type "necklace"
+      return normalize(p.name).includes(matchText);
+    });
+  }, [type]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const start = (page - 1) * PAGE_SIZE;
-  const pageItems = filtered.slice(start, start + PAGE_SIZE);
+  const items = filtered.slice(start, start + PAGE_SIZE);
+
+  const titleType = (typeToMatchText(type) || "").toUpperCase();
 
   return (
     <div className="ps-wrap">
-      <div className="ps-title">
-        PREMIUM COLLECTION/{type?.toUpperCase()}
-      </div>
+      <div className="ps-title">PREMIUM COLLECTION/{titleType}</div>
 
       <div className="ps-grid">
-        {pageItems.map((p, idx) => (
+        {items.map((p, idx) => (
           <PremiumCard key={p.id} num={start + idx + 1} />
         ))}
       </div>
@@ -61,12 +70,6 @@ export default function PremiumSub() {
   );
 }
 
-/**
- * Matches your screenshot styling:
- * - rounded image frame with number
- * - brown pill with +/-
- * - brown "ADD TO CART" pill
- */
 function PremiumCard({ num }) {
   const [qty, setQty] = useState(0);
 
@@ -99,4 +102,3 @@ function PremiumCard({ num }) {
     </div>
   );
 }
-``
