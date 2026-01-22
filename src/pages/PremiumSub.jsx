@@ -12,10 +12,18 @@ export default function PremiumSub() {
   useEffect(() => setPage(1), [type]);
 
   const filtered = useMemo(() => {
-    // Works with your existing data if you add type fields.
-    // If you haven't added type fields yet, it will show nothing.
-    return products.filter((p) => p.category === "premium" && p.type === type);
-  }, [type]);
+  const normalize = (s) =>
+    s.toLowerCase().replace(/\s+/g, " ").trim();
+
+  // Convert URL type to matching text
+  const typeText =
+    type === "ear-rings" ? "ear rings" : type;
+
+  return products.filter((p) => {
+    if (p.category !== "premium") return false;
+    return normalize(p.name).includes(normalize(typeText));
+  });
+}, [type]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const start = (page - 1) * PAGE_SIZE;
