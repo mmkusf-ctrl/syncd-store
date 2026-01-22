@@ -1,3 +1,5 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 .premium-landing {
   min-height: 100vh;
   background-size: cover;
@@ -8,12 +10,13 @@
   overflow: hidden;
 }
 
-/* Soft white overlay for luxury look */
+/* Luxury soft overlay (keeps buttons readable) */
 .premium-landing::before {
   content: "";
   position: absolute;
   inset: 0;
   background: rgba(255,255,255,0.55);
+  pointer-events: none;
 }
 
 .premium-header {
@@ -27,6 +30,8 @@
 
 .premium-logo {
   width: 64px;
+  height: 64px;
+  object-fit: contain;
 }
 
 .premium-title {
@@ -35,18 +40,19 @@
   font-weight: 700;
 }
 
-/* Button container */
+/* Button stage */
 .premium-buttons {
   position: relative;
   z-index: 2;
   height: calc(100vh - 120px);
 }
 
-/* Shared button style */
+/* Button base */
 .premium-btn {
   position: absolute;
-  left: -400px; /* start off-screen */
-  background: rgba(255,255,255,0.9);
+  left: -700px;            /* start far left */
+  opacity: 0;              /* hidden until animation */
+  background: rgba(255,255,255,0.92);
   border: 3px solid #000;
   padding: 16px 52px;
   font-weight: 700;
@@ -54,31 +60,46 @@
   font-size: 14px;
   cursor: pointer;
   min-width: 260px;
+  transition: transform 0.2s ease;
 }
 
-/* Final positions */
-.slide-1 { animation: slideIn 1.8s ease-out forwards; }
-.slide-2 { animation: slideIn 1.8s ease-out 0.4s forwards; }
-.slide-3 { animation: slideIn 1.8s ease-out 0.8s forwards; }
+.premium-btn:hover {
+  transform: translateY(-2px);
+}
 
+/* Diagonal placement + stagger */
+.slide-1 { top: 22%; animation: slideIn 1.8s ease-out forwards; }
+.slide-2 { top: 42%; animation: slideIn 1.8s ease-out 0.4s forwards; }
+.slide-3 { top: 62%; animation: slideIn 1.8s ease-out 0.8s forwards; }
+
+/* Left -> right animation */
 @keyframes slideIn {
-  from { left: -500px; opacity: 0; }
-  to   { left: 60%; opacity: 1; }
+  from { left: -700px; opacity: 0; }
+  to   { left: 58%; opacity: 1; }
 }
 
-/* Mobile */
+/* Mobile: stack buttons, keep a small fade-in (no sliding off-screen) */
 @media (max-width: 768px) {
   .premium-buttons {
+    height: auto;
+    padding: 28px 0 40px;
     display: grid;
     place-items: center;
-    gap: 20px;
-    height: auto;
-    padding-top: 40px;
+    gap: 18px;
   }
 
   .premium-btn {
     position: static;
-    animation: none;
-    left: 0;
+    opacity: 1;
+    min-width: 260px;
+    animation: popIn 0.5s ease-out both;
+  }
+
+  .slide-2 { animation-delay: 0.1s; }
+  .slide-3 { animation-delay: 0.2s; }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 }
