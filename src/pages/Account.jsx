@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 export default function Account() {
   return (
     <div style={{ padding: 22, fontFamily: "Arial, sans-serif" }}>
