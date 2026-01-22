@@ -4,11 +4,12 @@ import "./PremiumSub.css";
 export default function PremiumSub() {
   return (
     <PageTransition>
-      {/* KEEP YOUR EXISTING PremiumSub JSX BELOW */}
-      <div className="ps-wrap">
-        {/* Paste your existing PremiumSub content here */}
+      <div className="premium-sub">
+        {/* Put your existing PremiumSub page content here */}
+        <h1 style={{ padding: 22, fontFamily: "Arial, sans-serif" }}>
+          Premium Sub Page
+        </h1>
       </div>
-      {/* KEEP YOUR EXISTING PremiumSub JSX ABOVE */}
     </PageTransition>
   );
 }
