@@ -57,14 +57,13 @@
 }
 
 /* Final positions */
-.slide-1 { top: 22%; animation: slideIn 1s ease-out forwards; }
-.slide-2 { top: 42%; animation: slideIn 1s ease-out 0.3s forwards; }
-.slide-3 { top: 62%; animation: slideIn 1s ease-out 0.6s forwards; }
+.slide-1 { animation: slideIn 1.8s ease-out forwards; }
+.slide-2 { animation: slideIn 1.8s ease-out 0.4s forwards; }
+.slide-3 { animation: slideIn 1.8s ease-out 0.8s forwards; }
 
-/* Animation */
 @keyframes slideIn {
-  from { left: -400px; opacity: 0; }
-  to   { left: 55%; opacity: 1; }
+  from { left: -500px; opacity: 0; }
+  to   { left: 60%; opacity: 1; }
 }
 
 /* Mobile */
