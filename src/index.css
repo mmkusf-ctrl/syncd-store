@@ -38,3 +38,15 @@ button:active {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Page transitions */
+.page {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.page-show {
+  opacity: 1;
+  transform: translateY(0);
+}
