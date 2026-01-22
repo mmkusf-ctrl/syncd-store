@@ -1,15 +1,34 @@
-import PageTransition from "../components/PageTransition.jsx";
+import { products } from "../data/products";
 import "./PremiumSub.css";
 
 export default function PremiumSub() {
+  const necklace = products.filter(p => p.category === "premium");
+
   return (
-    <PageTransition>
-      <div className="premium-sub">
-        {/* Put your existing PremiumSub page content here */}
-        <h1 style={{ padding: 22, fontFamily: "Arial, sans-serif" }}>
-          Premium Sub Page
-        </h1>
+    <div className="necklace-page">
+      <div className="necklace-overlay">
+
+        <h2 className="necklace-title">
+          PREMIUM COLLECTION / NECKLACE
+        </h2>
+
+        <div className="necklace-grid">
+          {necklace.map((p, i) => (
+            <div key={p.id} className="necklace-card">
+              <div className="necklace-img">{i + 1}</div>
+
+              <div className="qty">
+                <button>-</button>
+                <span>1</span>
+                <button>+</button>
+              </div>
+
+              <button className="add-btn">ADD TO CART</button>
+            </div>
+          ))}
+        </div>
+
       </div>
-    </PageTransition>
+    </div>
   );
 }
