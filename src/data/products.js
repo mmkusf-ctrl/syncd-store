@@ -38,7 +38,7 @@ export const products = [
   { id: 310, name: "Premium Bracelet 10", price: 99.99, category: "premium" },
   { id: 311, name: "Premium Bracelet 11", price: 109.99, category: "premium" },
 
-  // ===== PEARL COLLECTION (unchanged) =====
+  // ===== PEARL NECKLACE =====
   { id: 101, name: "Pearl Necklace 01", price: 79.99, category: "pearl" },
   { id: 102, name: "Pearl Necklace 02", price: 84.99, category: "pearl" },
   { id: 103, name: "Pearl Necklace 03", price: 74.99, category: "pearl" },
@@ -49,5 +49,31 @@ export const products = [
   { id: 108, name: "Pearl Necklace 08", price: 59.99, category: "pearl" },
   { id: 109, name: "Pearl Necklace 09", price: 99.99, category: "pearl" },
   { id: 110, name: "Pearl Necklace 10", price: 109.99, category: "pearl" },
-  { id: 111, name: "Pearl Necklace 11", price: 119.99, category: "pearl" }
+  { id: 111, name: "Pearl Necklace 11", price: 119.99, category: "pearl" },
+
+  // ===== PEARL EAR RINGS =====
+  { id: 401, name: "Pearl Ear Rings 01", price: 69.99, category: "pearl" },
+  { id: 402, name: "Pearl Ear Rings 02", price: 74.99, category: "pearl" },
+  { id: 403, name: "Pearl Ear Rings 03", price: 64.99, category: "pearl" },
+  { id: 404, name: "Pearl Ear Rings 04", price: 79.99, category: "pearl" },
+  { id: 405, name: "Pearl Ear Rings 05", price: 84.99, category: "pearl" },
+  { id: 406, name: "Pearl Ear Rings 06", price: 59.99, category: "pearl" },
+  { id: 407, name: "Pearl Ear Rings 07", price: 62.99, category: "pearl" },
+  { id: 408, name: "Pearl Ear Rings 08", price: 67.99, category: "pearl" },
+  { id: 409, name: "Pearl Ear Rings 09", price: 89.99, category: "pearl" },
+  { id: 410, name: "Pearl Ear Rings 10", price: 94.99, category: "pearl" },
+  { id: 411, name: "Pearl Ear Rings 11", price: 99.99, category: "pearl" },
+
+  // ===== PEARL BRACELET =====
+  { id: 501, name: "Pearl Bracelet 01", price: 69.99, category: "pearl" },
+  { id: 502, name: "Pearl Bracelet 02", price: 74.99, category: "pearl" },
+  { id: 503, name: "Pearl Bracelet 03", price: 64.99, category: "pearl" },
+  { id: 504, name: "Pearl Bracelet 04", price: 79.99, category: "pearl" },
+  { id: 505, name: "Pearl Bracelet 05", price: 84.99, category: "pearl" },
+  { id: 506, name: "Pearl Bracelet 06", price: 59.99, category: "pearl" },
+  { id: 507, name: "Pearl Bracelet 07", price: 62.99, category: "pearl" },
+  { id: 508, name: "Pearl Bracelet 08", price: 67.99, category: "pearl" },
+  { id: 509, name: "Pearl Bracelet 09", price: 89.99, category: "pearl" },
+  { id: 510, name: "Pearl Bracelet 10", price: 94.99, category: "pearl" },
+  { id: 511, name: "Pearl Bracelet 11", price: 99.99, category: "pearl" },
 ];
