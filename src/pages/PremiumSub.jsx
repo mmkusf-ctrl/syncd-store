@@ -1,34 +1,52 @@
+import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { products } from "../data/products";
 import "./PremiumSub.css";
 
+// Backgrounds (adjust names if your files differ)
+import premiumBg from "../assets/hero-bg.jpg";
+import pearlBg from "../assets/pearl-bg.jpg";
+
 export default function PremiumSub() {
   const { collection, sub } = useParams();
 
-  const items = products.filter(
-    (p) => p.collection === collection && p.sub === sub
-  );
+  // pick background based on collection
+  const bg = collection === "pearl" ? pearlBg : premiumBg;
 
-  const title =
-    `${collection.toUpperCase()} COLLECTION / ${sub.replace("-", " ").toUpperCase()}`;
+  const items = useMemo(() => {
+    return products.filter(
+      (p) => p.collection === collection && p.sub === sub
+    );
+  }, [collection, sub]);
+
+  const title = `${collection.toUpperCase()} COLLECTION / ${sub
+    .replace("-", " ")
+    .toUpperCase()}`;
 
   return (
-    <div className="sub-page">
-      <div className="sub-overlay">
-        <h2 className="sub-title">{title}</h2>
+    <div className="premium-landing" style={{ backgroundImage: `url(${bg})` }}>
+      <div className="ps-wrap">
+        <h2 className="ps-title">{title}</h2>
 
-        <div className="sub-grid">
-          {items.map((p, i) => (
-            <div key={p.id} className="sub-card">
-              <div className="sub-img">{i + 1}</div>
-
-              <div className="qty">
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
+        <div className="ps-grid">
+          {items.map((p, idx) => (
+            <div key={p.id} className="ps-card">
+              <div className="ps-image">
+                <div className="ps-num">{idx + 1}</div>
               </div>
 
-              <button className="add-btn">ADD TO CART</button>
+              <div className="ps-controls">
+                <button className="ps-qty-btn" type="button">
+                  +
+                </button>
+                <button className="ps-qty-btn" type="button">
+                  −
+                </button>
+              </div>
+
+              <button className="ps-add" type="button">
+                ADD TO CART
+              </button>
             </div>
           ))}
         </div>
