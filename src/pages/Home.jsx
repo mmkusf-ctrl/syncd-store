@@ -1,12 +1,14 @@
 import "./Home.css";
 import { FaUser, FaShoppingCart, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import heroBg from "../assets/hero-bg.jpg";
+import logo from "../assets/logo.png";
 
 export default function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="home">
+    <div className="home" style={{ backgroundImage: `url(${heroBg})` }}>
       <header className="header">
         <div className="search-box">
           <input placeholder="SEARCH HERE..." />
@@ -28,10 +30,8 @@ export default function Home() {
 
       <main className="hero">
         <div className="logo-box">
-          <div className="logo-fake">
-            sync’d
-            <div className="tagline">...with your beauty</div>
-          </div>
+          <img className="logo" src={logo} alt="SYNC'D" />
+          <div className="tagline">...with your beauty</div>
         </div>
 
         <div className="cta-buttons">
