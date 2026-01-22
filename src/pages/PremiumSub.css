@@ -1,0 +1,119 @@
+.ps-wrap{
+  position: relative;
+  z-index: 2;            /* must be above overlay */
+  padding: 18px 22px 30px;
+}
+
+.ps-title{
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 6px 0 16px;
+  color: #111;
+}
+
+.ps-grid{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(170px, 1fr));
+  gap: 26px 34px;
+  align-items: start;
+  padding-top: 6px;
+}
+
+/* Card is transparent like screenshot */
+.ps-card{
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+/* Rounded image frame */
+.ps-image{
+  width: 135px;
+  height: 135px;
+  border: 3px solid #000;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(2px);
+  display: grid;
+  place-items: center;
+}
+
+.ps-num{
+  font-weight: 700;
+  color: #111;
+}
+
+/* Brown qty bar */
+.ps-controls{
+  width: 150px;
+  height: 34px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(75, 45, 34, 0.92);
+}
+
+.ps-qty-btn{
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.ps-qty-btn:hover{
+  background: rgba(255,255,255,0.08);
+}
+
+/* Brown add button */
+.ps-add{
+  width: 150px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(75, 45, 34, 0.92);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.ps-add:hover{
+  background: rgba(75, 45, 34, 1);
+}
+
+/* Pager (optional) */
+.ps-pager{
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  align-items: center;
+}
+
+.ps-pager button{
+  padding: 8px 14px;
+  border: 1px solid #111;
+  background: rgba(255,255,255,0.8);
+  cursor: pointer;
+}
+
+.ps-pager button:disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 1100px){
+  .ps-grid{ grid-template-columns: repeat(3, minmax(170px, 1fr)); }
+}
+@media (max-width: 820px){
+  .ps-grid{ grid-template-columns: repeat(2, minmax(170px, 1fr)); }
+}
+@media (max-width: 520px){
+  .ps-grid{ grid-template-columns: 1fr; }
+}
