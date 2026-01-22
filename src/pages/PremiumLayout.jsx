@@ -1,5 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import "./PremiumLanding.css";
+import CartIcon from "../components/CartIcon.jsx";
 
 import premiumBg from "../assets/premium-bg.jpg";
 import logo from "../assets/logo.png";
@@ -8,10 +9,7 @@ export default function PremiumLayout() {
   const navigate = useNavigate();
 
   return (
-    <div
-      className="premium-landing"
-      style={{ backgroundImage: `url(${premiumBg})` }}
-    >
+    <div className="premium-landing" style={{ backgroundImage: `url(${premiumBg})` }}>
       <header className="premium-header">
         <img
           className="premium-logo"
@@ -20,7 +18,15 @@ export default function PremiumLayout() {
           style={{ cursor: "pointer" }}
           onClick={() => navigate("/")}
         />
+
         <h1 className="premium-title">PREMIUM COLLECTION</h1>
+
+        <div className="premium-actions">
+          <button className="icon-btn" onClick={() => navigate("/account")}>
+            ACCOUNT
+          </button>
+          <CartIcon />
+        </div>
       </header>
 
       <Outlet />
