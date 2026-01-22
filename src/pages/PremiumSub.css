@@ -117,3 +117,22 @@
 @media (max-width: 520px){
   .ps-grid{ grid-template-columns: 1fr; }
 }
+
+.premium-landing {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.premium-landing-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.55);
+  z-index: 1;
+}
+
+/* Ensure the content stays above overlay */
+.ps-wrap { position: relative; z-index: 2; }
