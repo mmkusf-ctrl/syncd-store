@@ -4,25 +4,27 @@ import { products } from "../data/products";
 import "./PremiumSub.css";
 
 import logo from "../assets/logo.png";
-import premiumBg from "../assets/hero-bg.jpg";     // your premium background
-import pearlBg from "../assets/pearl-bg.jpg";      // your pearl background
+import premiumBg from "../assets/hero-bg.jpg";
+import pearlBg from "../assets/pearl-bg.jpg";
 
 import { FaShoppingCart, FaUser } from "react-icons/fa";
-import { addToCart, getCart } from "../context/cartStore"; 
-// NOTE: if your cartStore uses a different add function name,
-// change addToCart import to the correct one (ex: addItem)
+import { addToCart, getCart } from "../context/cartStore";
 
 export default function PremiumSub() {
   const navigate = useNavigate();
-  const { collection, sub } = useParams(); // URL: /collection/:collection/:sub
+  const params = useParams();
 
-  // keep cart badge updated
+  // Support both route styles:
+  // /collection/:collection/:sub  OR /collection/:category/:sub
+  const collection = params.collection || params.category; 
+  const sub = params.sub;
+
+  // cart badge
   const [cartCount, setCartCount] = useState(0);
   useEffect(() => {
     const refresh = () => {
       const cart = getCart();
-      const count = cart.reduce((s, it) => s + (it.qty || 0), 0);
-      setCartCount(count);
+      setCartCount(cart.reduce((s, it) => s + (it.qty || 0), 0));
     };
     refresh();
     window.addEventListener("cart:updated", refresh);
@@ -32,19 +34,15 @@ export default function PremiumSub() {
   const bg = collection === "pearl" ? pearlBg : premiumBg;
 
   const items = useMemo(() => {
-    return products.filter(
-      (p) => p.collection === collection && p.sub === sub
-    );
+    return products.filter((p) => p.collection === collection && p.sub === sub);
   }, [collection, sub]);
 
-  const title = `${collection?.toUpperCase() || ""} COLLECTION / ${String(sub || "")
+  const title = `${String(collection || "").toUpperCase()} COLLECTION / ${String(sub || "")
     .replace(/-/g, " ")
     .toUpperCase()}`;
 
   function handleAdd(product) {
-    // add 1 qty to cart (cartStore should handle merging)
     addToCart(product, 1);
-    // notify other pages
     window.dispatchEvent(new Event("cart:updated"));
   }
 
@@ -52,13 +50,12 @@ export default function PremiumSub() {
     <div className="premium-landing" style={{ backgroundImage: `url(${bg})` }}>
       <div className="premium-landing-overlay" />
 
-      {/* HEADER */}
       <header className="ps-header">
         <button className="ps-logoBtn" onClick={() => navigate("/")}>
           <img className="ps-logo" src={logo} alt="SYNC'D" />
         </button>
 
-        <div className="ps-headTitle">{collection?.toUpperCase()} COLLECTION</div>
+        <div className="ps-headTitle">{String(collection || "").toUpperCase()} COLLECTION</div>
 
         <div className="ps-headActions">
           <button className="ps-action" onClick={() => navigate("/account")}>
@@ -74,7 +71,6 @@ export default function PremiumSub() {
         </div>
       </header>
 
-      {/* CONTENT */}
       <div className="ps-wrap">
         <h2 className="ps-title">{title}</h2>
 
@@ -94,16 +90,8 @@ export default function PremiumSub() {
                 </div>
 
                 <div className="ps-controls">
-                  <button className="ps-qty-btn" onClick={() => handleAdd(p)}>
-                    +
-                  </button>
-                  <button
-                    className="ps-qty-btn"
-                    onClick={() => navigate("/cart")}
-                    title="Go to cart to adjust quantity"
-                  >
-                    −
-                  </button>
+                  <button className="ps-qty-btn" onClick={() => handleAdd(p)}>+</button>
+                  <button className="ps-qty-btn" onClick={() => navigate("/cart")}>−</button>
                 </div>
 
                 <button className="ps-add" onClick={() => handleAdd(p)}>
