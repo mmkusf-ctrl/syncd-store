@@ -1,15 +1,14 @@
 // src/pages/PremiumLanding.jsx
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./PremiumLanding.css";
 
-import logo from "../assets/logo.png";
 import premiumBg from "../assets/hero-bg.jpg";
+import logo from "../assets/logo.png";
 
 import { getCartCount } from "../context/cartStore";
 
 export default function PremiumLanding() {
-  const navigate = useNavigate();
   const [cartCount, setCartCount] = useState(getCartCount());
 
   useEffect(() => {
@@ -26,89 +25,39 @@ export default function PremiumLanding() {
       <div className="premium-landing-overlay" />
 
       <header className="premium-header">
-        <img
-          src={logo}
-          alt="SYNC'D"
-          className="premium-logo"
-          onClick={() => navigate("/")}
-          style={{ cursor: "pointer" }}
-        />
+        <Link to="/" aria-label="Home">
+          <img className="premium-logo" src={logo} alt="syncd logo" />
+        </Link>
 
         <div className="premium-title">PREMIUM COLLECTION</div>
 
         <div style={{ marginLeft: "auto", display: "flex", gap: 18 }}>
-          <button
-            onClick={() => navigate("/account")}
-            style={{
-              background: "transparent",
-              border: "none",
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
-          >
+          <Link to="/account" style={{ textDecoration: "none", color: "#111", fontWeight: 700 }}>
             ACCOUNT
-          </button>
+          </Link>
 
-          <button
-            onClick={() => navigate("/cart")}
-            style={{
-              position: "relative",
-              background: "transparent",
-              border: "none",
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
+          <Link
+            to="/cart"
+            style={{ textDecoration: "none", color: "#111", fontWeight: 700 }}
           >
-            CART
-            {cartCount > 0 ? (
-              <span
-                style={{
-                  position: "absolute",
-                  top: -8,
-                  right: -10,
-                  minWidth: 18,
-                  height: 18,
-                  borderRadius: 999,
-                  background: "#111",
-                  color: "#fff",
-                  display: "grid",
-                  placeItems: "center",
-                  fontSize: 12,
-                  padding: "0 5px",
-                }}
-              >
-                {cartCount}
-              </span>
-            ) : null}
-          </button>
+            CART{cartCount > 0 ? ` (${cartCount})` : ""}
+          </Link>
         </div>
       </header>
 
-      <main className="premium-buttons">
-        <button
-          className="premium-btn slide-1"
-          onClick={() => navigate("/collection/premium/necklace")}
-          style={{ top: "18%" }}
-        >
+      <div className="premium-buttons">
+        <Link className="premium-btn slide-1" to="/collection/premium/necklace">
           NECKLACE
-        </button>
+        </Link>
 
-        <button
-          className="premium-btn slide-2"
-          onClick={() => navigate("/collection/premium/ear-rings")}
-          style={{ top: "42%" }}
-        >
+        <Link className="premium-btn slide-2" to="/collection/premium/ear-rings">
           EAR RINGS
-        </button>
+        </Link>
 
-        <button
-          className="premium-btn slide-3"
-          onClick={() => navigate("/collection/premium/bracelet")}
-          style={{ top: "66%" }}
-        >
+        <Link className="premium-btn slide-3" to="/collection/premium/bracelet">
           BRACELET
-        </button>
-      </main>
+        </Link>
+      </div>
     </div>
   );
 }
