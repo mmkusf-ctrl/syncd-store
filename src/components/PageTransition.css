@@ -1,0 +1,15 @@
+.pt{
+  animation: none;
+  will-change: opacity, transform;
+}
+
+.pt.enter{
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.pt.entered{
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 260ms ease, transform 260ms ease;
+}
