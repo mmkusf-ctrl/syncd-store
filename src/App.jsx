@@ -1,115 +1,32 @@
+// src/App.jsx
 import { Routes, Route, Navigate } from "react-router-dom";
-
-import PageTransition from "./components/PageTransition.jsx";
 
 import Home from "./pages/Home.jsx";
 import Cart from "./pages/Cart.jsx";
-
 import Account from "./pages/Account.jsx";
 
-import PremiumLayout from "./pages/PremiumLayout.jsx";
 import PremiumLanding from "./pages/PremiumLanding.jsx";
-
-import PearlLayout from "./pages/PearlLayout.jsx";
 import PearlLanding from "./pages/PearlLanding.jsx";
-
 import PremiumSub from "./pages/PremiumSub.jsx";
-import Collection from "./pages/Collection.jsx";
 
 export default function App() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <PageTransition>
-            <Home />
-          </PageTransition>
-        }
-      />
+      {/* Home */}
+      <Route path="/" element={<Home />} />
 
-      {/* PREMIUM */}
-      <Route
-        path="/collection/premium"
-        element={
-          <PageTransition>
-            <PremiumLayout />
-          </PageTransition>
-        }
-      >
-        <Route
-          index
-          element={
-            <PageTransition>
-              <PremiumLanding />
-            </PageTransition>
-          }
-        />
-        <Route
-          path=":type"
-          element={
-            <PageTransition>
-              <PremiumSub />
-            </PageTransition>
-          }
-        />
-      </Route>
+      {/* Collection landings */}
+      <Route path="/collection/premium" element={<PremiumLanding />} />
+      <Route path="/collection/pearl" element={<PearlLanding />} />
 
-      {/* PEARL */}
-      <Route
-        path="/collection/pearl"
-        element={
-          <PageTransition>
-            <PearlLayout />
-          </PageTransition>
-        }
-      >
-        <Route
-          index
-          element={
-            <PageTransition>
-              <PearlLanding />
-            </PageTransition>
-          }
-        />
-        <Route
-          path=":type"
-          element={
-            <PageTransition>
-              <PremiumSub />
-            </PageTransition>
-          }
-        />
-      </Route>
+      {/* Sub-collection pages (necklace / ear-rings / bracelet) */}
+      <Route path="/collection/:collection/:sub" element={<PremiumSub />} />
 
-      {/* OPTIONAL FALLBACK */}
-      <Route
-        path="/collection/:category"
-        element={
-          <PageTransition>
-            <Collection />
-          </PageTransition>
-        }
-      />
+      {/* Utility pages */}
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/account" element={<Account />} />
 
-      <Route
-        path="/cart"
-        element={
-          <PageTransition>
-            <Cart />
-          </PageTransition>
-        }
-      />
-
-      <Route
-        path="/account"
-        element={
-          <PageTransition>
-            <Account />
-          </PageTransition>
-        }
-      />
-
+      {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
