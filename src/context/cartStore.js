@@ -1,4 +1,5 @@
 // src/context/cartStore.js
+
 const KEY = "syncd_cart_v1";
 
 function read() {
@@ -13,7 +14,7 @@ function read() {
 
 function write(items) {
   localStorage.setItem(KEY, JSON.stringify(items));
-  // notify pages (Cart listens to this)
+  // Notify all pages/components to refresh cart badge + cart page
   window.dispatchEvent(new Event("cart:updated"));
 }
 
@@ -21,50 +22,50 @@ export function getCart() {
   return read();
 }
 
-export function clearCart() {
-  write([]);
+export function getCartCount() {
+  const cart = read();
+  return cart.reduce((sum, it) => sum + (Number(it.qty) || 0), 0);
 }
 
-export function removeItem(id) {
-  const items = read().filter((it) => it.id !== id);
-  write(items);
+export function addToCart(product, qty = 1) {
+  const cart = read();
+  const q = Math.max(1, Number(qty) || 1);
+
+  const idx = cart.findIndex((x) => x.id === product.id);
+  if (idx >= 0) {
+    cart[idx].qty = (Number(cart[idx].qty) || 0) + q;
+  } else {
+    cart.push({ ...product, qty: q });
+  }
+
+  write(cart);
 }
 
 export function incQty(id) {
-  const items = read().map((it) =>
-    it.id === id ? { ...it, qty: (it.qty || 1) + 1 } : it
-  );
-  write(items);
+  const cart = read();
+  const idx = cart.findIndex((x) => x.id === id);
+  if (idx >= 0) {
+    cart[idx].qty = (Number(cart[idx].qty) || 0) + 1;
+    write(cart);
+  }
 }
 
 export function decQty(id) {
-  const items = read()
-    .map((it) =>
-      it.id === id ? { ...it, qty: Math.max(1, (it.qty || 1) - 1) } : it
-    )
-    .filter((it) => (it.qty || 1) >= 1);
-  write(items);
+  const cart = read();
+  const idx = cart.findIndex((x) => x.id === id);
+  if (idx >= 0) {
+    const next = (Number(cart[idx].qty) || 0) - 1;
+    if (next <= 0) cart.splice(idx, 1);
+    else cart[idx].qty = next;
+    write(cart);
+  }
 }
 
-// Call this from product pages
-export function addToCart(product, qty = 1) {
-  const items = read();
-  const existing = items.find((it) => it.id === product.id);
+export function removeItem(id) {
+  const cart = read().filter((x) => x.id !== id);
+  write(cart);
+}
 
-  if (existing) {
-    existing.qty = (existing.qty || 1) + qty;
-    write([...items]);
-    return;
-  }
-
-  const item = {
-    id: product.id,
-    name: product.name,
-    price: Number(product.price || 0),
-    qty: Math.max(1, Number(qty || 1)),
-    collection: product.collection,
-    sub: product.sub,
-  };
-
-  write([...items, item]);
+export function clearCart() {
+  write([]);
 }
