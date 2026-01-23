@@ -1,36 +1,43 @@
-// src/App.jsx
-import { Routes, Route, Navigate } from "react-router-dom";
-
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Cart from "./pages/Cart.jsx";
 import Account from "./pages/Account.jsx";
 
-import PremiumLanding from "./pages/PremiumLanding.jsx";
-import PearlLanding from "./pages/PearlLanding.jsx";
-import PremiumSub from "./pages/PremiumSub.jsx";
-
-// Keep your old Collection page ONLY if you still use it
-import Collection from "./pages/Collection.jsx";
+import CollectionLanding from "./pages/CollectionLanding.jsx";
+import CollectionSub from "./pages/CollectionSub.jsx";
+import AnimatedRoutes from "./components/AnimatedRoutes.jsx";
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
+    <HashRouter>
+      <AnimatedRoutes>
+        <Routes>
+          <Route path="/" element={<Home />} />
 
-      {/* Landing pages */}
-      <Route path="/collection/premium" element={<PremiumLanding />} />
-      <Route path="/collection/pearl" element={<PearlLanding />} />
+          {/* Collection landing (Premium/Pearl) */}
+          <Route path="/collection/:collection" element={<CollectionLanding />} />
 
-      {/* Sub-collection pages: premium/necklace, pearl/necklace, premium/ear-rings, etc */}
-      <Route path="/collection/:collection/:sub" element={<PremiumSub />} />
+          {/* Sub pages */}
+          <Route path="/collection/:collection/:sub" element={<CollectionSub />} />
 
-      {/* Optional legacy route (if you still use it) */}
-      <Route path="/collection/:category" element={<Collection />} />
+          {/* Legacy redirect: ear-rings -> earrings */}
+          <Route
+            path="/collection/:collection/ear-rings"
+            element={<LegacyRedirect toSub="earrings" />}
+          />
 
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/account" element={<Account />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/account" element={<Account />} />
 
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AnimatedRoutes>
+    </HashRouter>
   );
+}
+
+function LegacyRedirect({ toSub }) {
+  // keep same collection param, redirect sub
+  const { collection } = require("react-router-dom").useParams();
+  return <Navigate to={`/collection/${collection}/${toSub}`} replace />;
 }
