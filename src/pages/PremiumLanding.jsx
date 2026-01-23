@@ -1,32 +1,22 @@
 // src/pages/PremiumLanding.jsx
-import { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./PremiumLanding.css";
 
 import logo from "../assets/logo.png";
-import premiumBg from "../assets/hero-bg.jpg"; // <-- make sure this file exists: src/assets/hero-bg.jpg
+import premiumBg from "../assets/hero-bg.jpg";
 
-import { getCartCount } from "../context/cartStore"; // if you don't have this, I give fallback below
+import { getCartCount } from "../context/cartStore";
 
 export default function PremiumLanding() {
   const navigate = useNavigate();
+  const [cartCount, setCartCount] = useState(getCartCount());
 
-  // optional: scroll to top on page enter
-  useEffect(() => window.scrollTo(0, 0), []);
-
-  // cart count badge (safe even if you don’t have cartStore helper)
-  const count =
-    typeof getCartCount === "function"
-      ? getCartCount()
-      : (() => {
-          try {
-            const raw = localStorage.getItem("syncd_cart");
-            const arr = raw ? JSON.parse(raw) : [];
-            return arr.reduce((s, i) => s + (i.qty || 0), 0);
-          } catch {
-            return 0;
-          }
-        })();
+  useEffect(() => {
+    const onUpdate = () => setCartCount(getCartCount());
+    window.addEventListener("cart:updated", onUpdate);
+    return () => window.removeEventListener("cart:updated", onUpdate);
+  }, []);
 
   return (
     <div
@@ -35,43 +25,86 @@ export default function PremiumLanding() {
     >
       <div className="premium-landing-overlay" />
 
-      <header className="premium-topbar">
-        <Link to="/" className="brand">
-          <img className="brand-logo" src={logo} alt="SYNC'D" />
-        </Link>
+      <header className="premium-header">
+        <img
+          src={logo}
+          alt="SYNC'D"
+          className="premium-logo"
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+        />
 
-        <div className="brand-title">PREMIUM COLLECTION</div>
+        <div className="premium-title">PREMIUM COLLECTION</div>
 
-        <nav className="top-actions">
-          <button className="top-link" onClick={() => navigate("/account")}>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 18 }}>
+          <button
+            onClick={() => navigate("/account")}
+            style={{
+              background: "transparent",
+              border: "none",
+              fontWeight: 700,
+              cursor: "pointer",
+            }}
+          >
             ACCOUNT
           </button>
 
-          <button className="top-link cartbtn" onClick={() => navigate("/cart")}>
+          <button
+            onClick={() => navigate("/cart")}
+            style={{
+              position: "relative",
+              background: "transparent",
+              border: "none",
+              fontWeight: 700,
+              cursor: "pointer",
+            }}
+          >
             CART
-            <span className="cart-badge">{count}</span>
+            {cartCount > 0 ? (
+              <span
+                style={{
+                  position: "absolute",
+                  top: -8,
+                  right: -10,
+                  minWidth: 18,
+                  height: 18,
+                  borderRadius: 999,
+                  background: "#111",
+                  color: "#fff",
+                  display: "grid",
+                  placeItems: "center",
+                  fontSize: 12,
+                  padding: "0 5px",
+                }}
+              >
+                {cartCount}
+              </span>
+            ) : null}
           </button>
-        </nav>
+        </div>
       </header>
 
-      <main className="premium-body">
+      <main className="premium-buttons">
         <button
-          className="premium-cta p1"
+          className="premium-btn slide-1"
           onClick={() => navigate("/collection/premium/necklace")}
+          style={{ top: "18%" }}
         >
           NECKLACE
         </button>
 
         <button
-          className="premium-cta p2"
+          className="premium-btn slide-2"
           onClick={() => navigate("/collection/premium/ear-rings")}
+          style={{ top: "42%" }}
         >
           EAR RINGS
         </button>
 
         <button
-          className="premium-cta p3"
+          className="premium-btn slide-3"
           onClick={() => navigate("/collection/premium/bracelet")}
+          style={{ top: "66%" }}
         >
           BRACELET
         </button>
